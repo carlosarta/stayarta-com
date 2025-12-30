@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
+import { supabase } from '../lib/supabase';
 
-// Mock Data Interface (to be replaced by actual Supabase types)
-type TableName = 'users' | 'products' | 'orders' | 'analytics' | 'audit_logs';
+type TableName = string;
 
 interface DatabaseContextType {
   isLoading: boolean;
@@ -17,19 +17,22 @@ export const DatabaseProvider = ({ children }: { children: React.ReactNode }) =>
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  // Mock Fetcher - In real app, this connects to Supabase Client
   const fetchData = async <T,>(table: TableName, query?: any): Promise<T[]> => {
     setIsLoading(true);
     setError(null);
     try {
-      // Simulate Network Delay
-      await new Promise(resolve => setTimeout(resolve, 800)); 
-      console.log(`[Database] Fetching from ${table}`, query);
-      
-      // Return empty array for now as we don't have the real DB connected
-      // Individual components will fall back to their MOCK_DATA constants if this returns empty
-      // or we can inject mocks here.
-      return []; 
+      if (!supabase) {
+        throw new Error('Supabase client is not configured');
+      }
+      let builder = supabase.from(table).select(query?.select ?? '*');
+      if (query?.filters && typeof query.filters === 'object') {
+        Object.entries(query.filters).forEach(([key, value]) => {
+          builder = builder.eq(key, value);
+        });
+      }
+      const { data, error: supaError } = await builder;
+      if (supaError) throw supaError;
+      return (data ?? []) as T[];
     } catch (err) {
       setError(err as Error);
       return [];
@@ -41,9 +44,16 @@ export const DatabaseProvider = ({ children }: { children: React.ReactNode }) =>
   const upsertData = async <T,>(table: TableName, data: Partial<T>): Promise<T | null> => {
     setIsLoading(true);
     try {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        console.log(`[Database] Upserting into ${table}`, data);
-        return data as T;
+        if (!supabase) {
+          throw new Error('Supabase client is not configured');
+        }
+        const { data: upserted, error: supaError } = await supabase
+          .from(table)
+          .upsert(data as any)
+          .select()
+          .single();
+        if (supaError) throw supaError;
+        return upserted as T;
     } catch (err) {
         setError(err as Error);
         return null;
@@ -53,7 +63,18 @@ export const DatabaseProvider = ({ children }: { children: React.ReactNode }) =>
   };
 
   const deleteData = async (table: TableName, id: string): Promise<boolean> => {
-     console.log(`[Database] Deleting from ${table}: ${id}`);
+     if (!supabase) {
+       setError(new Error('Supabase client is not configured'));
+       return false;
+     }
+     const { error: supaError } = await supabase
+       .from(table)
+       .delete()
+       .eq('id', id);
+     if (supaError) {
+       setError(supaError);
+       return false;
+     }
      return true;
   };
 
