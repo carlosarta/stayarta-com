@@ -1,0 +1,13 @@
+{
+  "codeConnect": {
+    "include": [
+      "./components/**/*.tsx",
+      "./components/**/*.jsx"
+    ],
+    "exclude": [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/.next/**"
+    ]
+  }
+}

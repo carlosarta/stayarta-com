@@ -1,0 +1,15 @@
+<svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0BF5C8" />
+      <stop offset="50%" stop-color="#FDBE34" />
+      <stop offset="100%" stop-color="#EC5228" />
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="32" fill="#050505" />
+  <circle cx="80" cy="80" r="58" stroke="url(#g)" stroke-width="8" fill="none" stroke-linecap="round">
+    <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 80 80" to="360 80 80" dur="6s" repeatCount="indefinite" />
+  </circle>
+  <text x="50%" y="52%" text-anchor="middle" font-family="'DM Serif Display', serif" font-size="28" fill="#FFFFFF">STAY</text>
+  <text x="50%" y="68%" text-anchor="middle" font-family="'DM Serif Display', serif" font-size="28" fill="#EC5228">Arta</text>
+</svg>

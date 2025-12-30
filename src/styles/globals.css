@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* --- SYSTEM COLORS (Light Mode - Not primary for this brand) --- */
+  --background: #EFEEEA;
+  --foreground: #050505;
+  --card: #ffffff;
+  --card-foreground: #050505;
+  --popover: #ffffff;
+  --popover-foreground: #050505;
+  --primary: #EC5228;
+  --primary-foreground: #ffffff;
+  --secondary: #00FFFF;
+  --secondary-foreground: #050505;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #FDBE34;
+  --accent-foreground: #050505;
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
+  --border: rgba(5, 5, 5, 0.1);
+  --input: rgba(5, 5, 5, 0.1);
+  --ring: #EC5228;
+  --radius: 0.5rem;
+
+  /* --- BRAND TOKENS --- */
+  --st-black: #050505;       /* Deep Black */
+  --st-dark: #111111;        /* Off-Black Surface */
+  --st-darkblue: #273F4F;    /* Legacy Brand Color */
+  --st-bonewhite: #EFEEEA;   /* Legacy Surface */
+  --st-orange: #EC5228;      /* Brand Accent 1 */
+  --st-yellow: #FDBE34;      /* Brand Accent 2 */
+  --st-cyan: #00FFFF;        /* Cyber Accent 1 */
+  --st-magenta: #FF00FF;     /* Cyber Accent 2 */
+  
+  /* --- TYPOGRAPHY --- */
+  --font-display: "DM Serif Display", serif;
+  --font-ui: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* --- DARK MODE (Primary Aesthetic) --- */
+.dark, :root { /* Force dark mode preference for the cyber aesthetic if needed, but we keep .dark class for toggle */
+  --background: #050505;
+  --foreground: #EFEEEA;
+  --card: #111111;
+  --card-foreground: #EFEEEA;
+  --popover: #111111;
+  --popover-foreground: #EFEEEA;
+  --primary: #00FFFF; /* Cyan is primary in dark mode */
+  --primary-foreground: #050505;
+  --secondary: #FF00FF;
+  --secondary-foreground: #ffffff;
+  --muted: #1f2937;
+  --muted-foreground: #9ca3af;
+  --accent: #273F4F;
+  --accent-foreground: #ffffff;
+  --destructive: #7f1d1d;
+  --destructive-foreground: #fef2f2;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: #00FFFF;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-st-black: var(--st-black);
+  --color-st-dark: var(--st-dark);
+  --color-st-darkblue: var(--st-darkblue);
+  --color-st-bonewhite: var(--st-bonewhite);
+  --color-st-orange: var(--st-orange);
+  --color-st-yellow: var(--st-yellow);
+  --color-st-cyan: var(--st-cyan);
+  --color-st-magenta: var(--st-magenta);
+  
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-display: var(--font-display);
+  --font-ui: var(--font-ui);
+  --font-mono: var(--font-mono);
+  
+  /* Custom Shadows for Neon Effect */
+  --shadow-neon-cyan: 0 0 5px theme('colors.cyan.500'), 0 0 20px theme('colors.cyan.900');
+  --shadow-neon-magenta: 0 0 5px theme('colors.fuchsia.500'), 0 0 20px theme('colors.fuchsia.900');
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  /* Improved Focus Visibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background transition-shadow;
+  }
+
+  body {
+    @apply bg-st-black text-foreground font-ui antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+
+  /* Utility Classes for Design System */
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+
+  .text-gradient-cyber {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-st-cyan to-st-magenta;
+  }
+  
+  .container-responsive {
+    @apply container mx-auto px-4 md:px-6 lg:px-8;
+  }
+}
